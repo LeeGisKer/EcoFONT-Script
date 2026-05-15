@@ -418,6 +418,10 @@ def _md_inline(text: str, mono_font: str) -> str:
 
 SUPPORTED_EXTS = {".pdf", ".docx", ".md", ".markdown"}
 
+SCRIPT_DIR        = Path(__file__).resolve().parent
+CONVERSION_FOLDER = SCRIPT_DIR / "Conversion Folder"
+CONVERTED_FOLDER  = SCRIPT_DIR / "Converted"
+
 
 def _resolve_inputs(raw_inputs, folder):
     """Return (supported_files, skipped_files)."""
@@ -461,9 +465,8 @@ def _output_path_for(input_path, output_arg, output_dir):
     if output_arg:
         return output_arg
     stem = input_path.stem
-    if output_dir:
-        return str(Path(output_dir) / f"{stem}_eco.pdf")
-    return str(input_path.parent / f"{stem}_eco.pdf")
+    dest = Path(output_dir) if output_dir else CONVERTED_FOLDER
+    return str(dest / f"{stem}_eco.pdf")
 
 
 
@@ -510,12 +513,18 @@ Stroke width guide:
     print(f"║         Eco Font Converter — Save Ink        ║")
     print(f"╚══════════════════════════════════════════════╝\n")
 
+    # Ensure Converted/ output folder always exists
+    CONVERTED_FOLDER.mkdir(exist_ok=True)
+
     raw_inputs = list(args.input)
     auto_mode = not raw_inputs and not args.folder
     if auto_mode:
-        print(f"  No input given — scanning current folder: {Path.cwd()}\n")
-        # Inject cwd files as candidates via folder resolution
-        args.folder = str(Path.cwd())
+        if CONVERSION_FOLDER.is_dir():
+            print(f"  No input given — scanning: {CONVERSION_FOLDER}\n")
+            args.folder = str(CONVERSION_FOLDER)
+        else:
+            print(f"  No input given — scanning current folder: {Path.cwd()}\n")
+            args.folder = str(Path.cwd())
 
     files, skipped = _resolve_inputs(raw_inputs, args.folder)
 
@@ -538,10 +547,10 @@ Stroke width guide:
         print("      Use --output-dir for batch mode.")
         sys.exit(1)
 
+    effective_out = args.output or args.output_dir or str(CONVERTED_FOLDER)
     print(f"  Files to convert : {len(files)}")
     print(f"  Stroke width     : {args.stroke_width}")
-    if args.output_dir:
-        print(f"  Output directory : {args.output_dir}")
+    print(f"  Output directory : {effective_out}")
     print()
 
     if args.dry_run:

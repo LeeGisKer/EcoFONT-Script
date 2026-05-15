@@ -5,7 +5,10 @@
       "Bash(python eco_font_converter.py --dry-run)",
       "Bash(python eco_font_converter.py README.md)",
       "Bash(python eco_font_converter.py README.md --stroke-width -1)",
-      "Bash(python eco_font_converter.py README.md --stroke-width 0.5 --dry-run)"
+      "Bash(python eco_font_converter.py README.md --stroke-width 0.5 --dry-run)",
+      "Bash(copy \"D:\\\\Proyectos\\\\EcoFONT Script\\\\README.md\" \"D:\\\\Proyectos\\\\EcoFONT Script\\\\Conversion Folder\\\\README.md\")",
+      "Bash(python \"D:\\\\Proyectos\\\\EcoFONT Script\\\\eco_font_converter.py\")",
+      "PowerShell(Copy-Item *)"
     ]
   }
 }
