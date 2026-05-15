@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo \"TEST_VAR=hello\")",
+      "Bash(python eco_font_converter.py --dry-run)",
+      "Bash(python eco_font_converter.py README.md)",
+      "Bash(python eco_font_converter.py README.md --stroke-width -1)",
+      "Bash(python eco_font_converter.py README.md --stroke-width 0.5 --dry-run)"
+    ]
+  }
+}
